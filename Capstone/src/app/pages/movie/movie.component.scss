@@ -1,0 +1,26 @@
+a {
+  cursor: pointer;
+}
+.letter-spacing {
+  letter-spacing: 2px;
+}
+
+.fs-5 {
+  font-weight: 200;
+}
+
+@media screen and (max-width: 767px) {
+  .image-div {
+    width: 75%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .image-div {
+    width: 25%;
+  }
+}
+
+img {
+  box-shadow: 0px 0px 60px -10px #424141;
+}

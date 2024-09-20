@@ -1,0 +1,43 @@
+.container {
+  min-height: 86vh;
+}
+form {
+  box-shadow: 1px 1px 20px 1px black;
+  padding: 2em;
+  margin-top: 5em;
+  div {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 0.5em;
+    }
+    span {
+      color: red;
+      padding: 1em;
+    }
+  }
+  input {
+    width: 100%;
+    padding: 0.5em;
+    border: none;
+    border-bottom: 1px solid white;
+    background-color: transparent;
+    outline: none;
+    color: white;
+  }
+  label {
+    font-size: large;
+  }
+
+  .ng-dirty.ng-invalid.ng-touched {
+    border-bottom: 1px solid red;
+  }
+
+  .ng-invalid.ng-touched {
+    border-bottom: 1px solid red;
+  }
+}

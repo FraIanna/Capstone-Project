@@ -1,0 +1,42 @@
+<nav class="navbar bg-black">
+  <div class="container-fluid align-items-center">
+    <a class="navbar-brand d-none d-sm-block">
+      <img
+        src="https://multisalapartenio.it/wp-content/uploads/2021/05/LOGO-COLORATO-TRASPARENTE-piccolo-compress-1.png"
+        class="img-fluid"
+      />
+    </a>
+    <div class="">
+      <ul class="navbar-nav flex-sm-row gap-3 flex-column">
+        <li>
+          <a class="custom-nav-link" routerLink="/">Home</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" routerLink="/product">Prodotti</a>
+        </li>
+        <li>
+          <a class="custom-nav-link" routerLink="/movie">Programmazione</a>
+        </li>
+      </ul>
+    </div>
+    <div class="position-relative login-div">
+      <i
+        *ngIf="!isLoggedIn"
+        class="bi bi-person-fill fs-4 position-absolute"
+      ></i>
+      <a *ngIf="!isLoggedIn" class="custom-nav-link" routerLink="/auth/login">
+        Accedi
+      </a>
+
+      <div *ngIf="isLoggedIn" class="d-flex flex-column align-items-end">
+        <a routerLink="/cart" class="pe-sm-3 pe-2">
+          <i class="bi bi-cart-fill cart fs-4"></i>
+        </a>
+        <a routerLink="/profile" class="custom-nav-link me-2 mb-2"
+          >Il mio Profilo</a
+        >
+        <a class="custom-nav-link me-2" (click)="logout()"> Esci </a>
+      </div>
+    </div>
+  </div>
+</nav>

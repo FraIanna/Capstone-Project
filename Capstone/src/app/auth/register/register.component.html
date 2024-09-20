@@ -1,0 +1,87 @@
+<div class="container">
+  <div class="row">
+    <h1 class="custom-border">Registrazione</h1>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="register()"
+      class="col-10 offset-1 col-md-6 offset-md-3 d-flex flex-column gap-4"
+    >
+      <div>
+        <label for="name">Inserisci qui il tuo nome</label>
+        <div>
+          <i class="bi bi-person"></i>
+          <input
+            id="name"
+            formControlName="name"
+            type="text"
+            placeholder="Mario Rossi"
+          />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('name')">Campo obbligatorio.</span>
+      </div>
+      <div>
+        <label for="email">Inserisci qui la tua email.</label>
+        <div>
+          <i class="bi bi-envelope"></i>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            placeholder="prova@gmail.com"
+          />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('email')">Campo obbligatorio.</span>
+      </div>
+      <div>
+        <label for="password">Inserisci qui la tua password.</label>
+        <div>
+          <button
+            type="button"
+            class="bg-transparent text-white border-0 outline-none"
+            (click)="togglePasswordVisibility('password')"
+          >
+            <i [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+          </button>
+          <input
+            id="password"
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+          />
+        </div>
+        <span *ngIf="invalidPassword('password')"
+          >Inserisci correttamente la password. Deve essere di massimo 50
+          caratteri, minimo di 10, deve contenere almeno una lettera maiuscola,
+          una cifra e un carattere speciale.</span
+        >
+      </div>
+      <div>
+        <label for="confirmPassword">Conferma password</label>
+        <div>
+          <button
+            type="button"
+            class="bg-transparent text-white border-0 outline-none"
+            (click)="togglePasswordVisibility('confirmPassword')"
+          >
+            <i
+              [ngClass]="showConfirmPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"
+            ></i>
+          </button>
+          <input
+            id="confirmPassword"
+            formControlName="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+          />
+        </div>
+        <span
+          *ngIf="form.errors?.['passwordMatch'] &&
+          (form.get('confirmPassword')?.dirty || form.get('confirmPassword')?.touched)"
+        >
+          Le password non coincidono.
+        </span>
+      </div>
+    </form>
+    <div class="col-12 d-flex justify-content-center mt-3">
+      <a class="custom-link-on-black" routerLink="/">Torna alla home</a>
+    </div>
+  </div>
+</div>

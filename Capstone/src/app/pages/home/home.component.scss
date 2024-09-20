@@ -1,0 +1,29 @@
+.picsum-img-wrapper {
+  display: flex;
+  img {
+    margin: auto;
+  }
+}
+
+h2 {
+  border-image: linear-gradient(
+      to right,
+      rgba(112, 25, 66, 1) 0%,
+      rgba(0, 0, 0, 1) 57%
+    )
+    1;
+  border-width: 4px;
+  border-style: solid;
+  padding: 5px;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.map-div {
+  height: 30em;
+}
+
+.movie-image {
+  box-shadow: 0px 0px 60px -20px #424141;
+}

@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row">
+    <h1 class="custom-border">Effettua il login con le tue credenziali</h1>
+    <form
+      [formGroup]="form"
+      (ngSubmit)="login()"
+      class="col-10 offset-1 col-md-6 offset-md-3 d-flex flex-column gap-4"
+    >
+      <div>
+        <label for="email">Inserisci qui la tua email.</label>
+        <div>
+          <i class="bi bi-envelope"></i>
+          <input
+            id="email"
+            formControlName="email"
+            type="email"
+            placeholder="prova@gmail.com"
+          />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('email')">Campo obbligatorio.</span>
+      </div>
+      <div>
+        <label for="password">Inserisci qui la tua password.</label>
+        <div>
+          <button
+            type="button"
+            class="bg-transparent text-white border-0 outline-none"
+            (click)="togglePasswordVisibility()"
+          >
+            <i [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+          </button>
+          <input
+            id="password"
+            formControlName="password"
+            [type]="showPassword ? 'text' : 'password'"
+          />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('password')">Campo obbligatorio.</span>
+      </div>
+      <div class="justify-content-center flex-row">
+        <button class="custom-btn-reversed w-25" (click)="login()">
+          Accedi
+        </button>
+      </div>
+    </form>
+    <div class="col-12 d-flex flex-column align-items-center pt-3">
+      <h5 class="mb-3">Non hai un'account?</h5>
+      <a class="custom-link-on-black" routerLink="/auth/register"
+        >Registrati qui</a
+      >
+    </div>
+  </div>
+</div>

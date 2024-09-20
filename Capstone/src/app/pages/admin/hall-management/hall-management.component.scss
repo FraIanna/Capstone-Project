@@ -1,0 +1,50 @@
+form {
+  input {
+    width: 100%;
+    padding: 0.5em;
+    border: none;
+    border-bottom: 1px solid white;
+    background-color: #0e0e0e;
+    outline: none;
+    color: white;
+  }
+  label {
+    font-size: large;
+  }
+
+  span {
+    display: block;
+    color: red;
+  }
+  .ng-dirty.ng-invalid.ng-touched {
+    border-bottom: 1px solid red;
+  }
+  .ng-invalid.ng-touched {
+    border-bottom: 1px solid red;
+  }
+}
+textarea {
+  background-color: #0e0e0e;
+  color: #fff;
+  border-radius: 5px;
+}
+textarea.ng-dirty.ng-invalid.ng-touched,
+textarea.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+table.custom-table {
+  width: 100%;
+  background-color: #0e0e0e;
+  color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  th {
+    background-color: rgba(112, 25, 66, 1);
+    padding: 1em;
+    border-bottom: 1px solid #ccc;
+  }
+  td {
+    padding: 1em;
+  }
+}

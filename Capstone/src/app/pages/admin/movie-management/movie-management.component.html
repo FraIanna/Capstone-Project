@@ -1,0 +1,362 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 pb-3">
+      <h1 class="custom-border">Gestione Film</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-12">
+      <h2>Tutti i film</h2>
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Titolo</th>
+            <th>Descrizione</th>
+            <th>Categoria</th>
+            <th>Cast</th>
+            <th>Data di uscita</th>
+            <th>Durata</th>
+            <th>Orari</th>
+            <th>Link del trailer</th>
+            <th>Copertina</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let movie of movies">
+            <td>{{ movie.title }}</td>
+            <td>{{ movie.description }}</td>
+            <td>{{ movie.category }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let actor of movie.casts">{{ actor }}</li>
+              </ul>
+            </td>
+            <td>{{ movie.releaseDate | date : "dd/MM/yyyy" }}</td>
+            <td>{{ movie.runtime }} min.</td>
+            <td>
+              <ul>
+                <li *ngFor="let showtime of movie.showtimes">
+                  {{ showtime.start | date : "HH:mm" }} -
+                  {{ showtime.end | date : "HH:mm" }}
+                </li>
+              </ul>
+            </td>
+            <td>
+              <a [href]="movie.trailerUrl" target="_blank">{{
+                movie.trailerUrl
+              }}</a>
+            </td>
+            <td>
+              <img
+                [src]="movie.imagePath"
+                alt="Movie image"
+                class="img-fluid"
+                style="width: 100px; height: auto"
+              />
+            </td>
+            <td>
+              <button class="custom-btn-reversed" (click)="openModal(movie)">
+                Modifica
+              </button>
+              <button class="custom-btn mt-3" (click)="deleteMovie(movie)">
+                Elimina
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h2 class="mt-5">Creazione di un Film</h2>
+  <div class="col-12 col-md-8">
+    <form [formGroup]="create" class="custom-container">
+      <div class="form-group mb-3">
+        <label for="title">Titolo del Film</label>
+        <div class="d-flex gap-2">
+          <input id="title" type="text" formControlName="title" />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('title')">Campo obbligatorio. </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="description">Descrizione del Film</label>
+        <div class="d-flex gap-2">
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+            cols="50"
+          ></textarea>
+        </div>
+        <span *ngIf="isTouchedAndInvalid('description')">
+          Campo obbligatorio.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="releaseDate">Data di Rilascio</label>
+        <div class="d-flex gap-2">
+          <input
+            id="releaseDate"
+            type="datetime-local"
+            formControlName="releaseDate"
+          />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('releaseDate')">
+          Campo obbligatorio.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="category">Categoria</label>
+        <div class="d-flex gap-2">
+          <input id="category" type="text" formControlName="category" />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('category')"
+          >Campo obbligatorio.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="runtime">Durata (minuti)</label>
+        <div class="d-flex gap-2">
+          <input id="runtime" type="number" formControlName="runtime" min="1" />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('runtime')">
+          Campo obbligatorio.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="image">Carica Immagine di Copertina</label>
+        <div class="d-flex gap-2">
+          <input
+            id="image"
+            type="file"
+            formControlName="imagePath"
+            (change)="onFileSelected($event)"
+            accept="image/*"
+          />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('imagePath')">
+          Campo obbligatorio.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="trailerUrl">URL Trailer</label>
+        <div class="d-flex gap-2">
+          <input id="trailerUrl" type="url" formControlName="trailerUrl" />
+        </div>
+        <span *ngIf="isTouchedAndInvalid('trailerUrl')">
+          Campo obbligatorio.
+        </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="casts">Cast</label>
+        <div class="d-flex gap-2">
+          <textarea
+            id="casts"
+            formControlName="casts"
+            rows="3"
+            cols="50"
+          ></textarea>
+        </div>
+        <span *ngIf="isTouchedAndInvalid('casts')"> Campo obbligatorio. </span>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="hallId">Sala</label>
+        <div class="d-flex gap-2">
+          <select id="hallId" formControlName="hallId">
+            <option *ngFor="let hall of halls" [value]="hall.id">
+              {{ hall.name }}
+            </option>
+          </select>
+        </div>
+        <span *ngIf="isTouchedAndInvalid('hallId')">Campo obbligatorio.</span>
+      </div>
+
+      <div formGroupName="showtimes" class="d-flex gap-2 showtime">
+        <div class="form-group">
+          <label for="start">Orari</label>
+          <div>
+            <input id="start" type="datetime-local" formControlName="start" />
+          </div>
+        </div>
+        <div class="form-group d-flex">
+          <input
+            id="end"
+            type="datetime-local"
+            formControlName="end"
+            class="align-self-end"
+          />
+        </div>
+      </div>
+      <span *ngIf="isTouchedAndInvalid('showtimes')" class="pt-2">
+        Campi obbligatori.
+      </span>
+
+      <button
+        class="custom-btn mt-3"
+        (click)="createMovie()"
+        [disabled]="create.invalid"
+      >
+        Crea Film
+      </button>
+    </form>
+  </div>
+</div>
+
+<ng-template #movieModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Modifica Film</h4>
+    <button
+      type="button"
+      class="btn-close text-bg-danger"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="movieForm" enctype="multipart/form-data">
+      <div class="form-group mb-3">
+        <label for="title">Titolo del Film</label>
+        <div class="d-flex gap-2">
+          <input id="title" type="text" formControlName="title" class="" />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="description">Descrizione del Film</label>
+        <div class="d-flex gap-2">
+          <textarea
+            id="description"
+            formControlName="description"
+            class=""
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="releaseDate">Data di Uscita</label>
+        <div class="d-flex gap-2">
+          <input
+            id="releaseDate"
+            type="date"
+            formControlName="releaseDate"
+            class=""
+          />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="category">Categoria del Film</label>
+        <div class="d-flex gap-2">
+          <input
+            id="category"
+            type="text"
+            formControlName="category"
+            class=""
+          />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="runtime">Durata del Film (minuti)</label>
+        <div class="d-flex gap-2">
+          <input id="runtime" type="number" formControlName="runtime" min="1" />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="image">Immagine di Copertina</label>
+        <div class="d-flex gap-2">
+          <input
+            id="image"
+            type="file"
+            formControlName="imagePath"
+            (change)="onFileSelected($event)"
+          />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="trailerUrl">URL del Trailer</label>
+        <div class="d-flex gap-2">
+          <input id="trailerUrl" type="text" formControlName="trailerUrl" />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="casts">Cast del Film</label>
+        <div class="d-flex gap-2">
+          <textarea id="casts" formControlName="casts" rows="3"></textarea>
+        </div>
+      </div>
+
+      <!-- <div class="form-group mb-3">
+        <label for="showtimes">Orari</label>
+        <div *ngFor="let time of movie.showtimes; let i = index" class="d-flex gap-2">
+          <input
+            type="time"
+            [formControlName]="'start_' + i"
+            [(ngModel)]="time.start"
+            class=""
+          />
+          <input
+            type="time"
+            [formControlName]="'end_' + i"
+            [(ngModel)]="time.end"
+            class=""
+          />
+          <button class="btn btn-danger" (click)="deleteShowtime(i)">Elimina</button>
+        </div>
+      </div>
+      <button class="btn btn-secondary" (click)="addShowtime()">Aggiungi Orario</button> -->
+      <div formGroupName="showtimes">
+        <div class="form-group mb-3">
+          <label for="start">Orario di Inizio</label>
+          <div class="d-flex gap-2">
+            <input id="start" type="time" formControlName="start" />
+          </div>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="end">Orario di Fine</label>
+          <div class="d-flex gap-2">
+            <input id="end" type="time" formControlName="end" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="hallId">Sala</label>
+        <div class="d-flex gap-2">
+          <select id="hallId" formControlName="hallId">
+            <option *ngFor="let hall of halls" [value]="hall.id">
+              {{ hall.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="custom-btn-reversed" (click)="modal.close()">
+      Chiudi
+    </button>
+    <button
+      type="button"
+      class="custom-btn-reversed"
+      (click)="submitModal(modal)"
+      [disabled]="movieForm.invalid"
+    >
+      Conferma
+    </button>
+  </div>
+</ng-template>

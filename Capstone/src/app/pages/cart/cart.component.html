@@ -1,0 +1,101 @@
+@if (reservations.length > 0 && orders.length > 0) {
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="custom-border">Carrello</h1>
+    </div>
+    <div class="col-md-8 col-12">
+      <h2>Prenotazioni</h2>
+      @for (item of combinedData; track $index) {
+      <div class="row">
+        <div class="col-2">
+          <div>
+            <img
+              [src]="item.reservation.movie?.imagePath"
+              alt="image"
+              class="img-fluid"
+            />
+          </div>
+        </div>
+        <div class="col-4">
+          <h5>{{ item.reservation.movie?.title }}</h5>
+          <div class="row">
+            <div class="col-12">
+              <p>{{ item.reservation.hall.name }}</p>
+              <p>Posto: {{ item.reservation.seat?.seatNumber }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div *ngFor="let i of item.order.items">
+            <div class="d-flex gap-2">
+              <p>{{ i.product.name }}</p>
+              <p>
+                {{ i.product.price | currency : "EUR" }}
+              </p>
+              @if(i.product.name != "Ticket"){
+              <input
+                min="0"
+                type="number"
+                [value]="i.quantity"
+                class="custom-number-input"
+                (change)="updateItemQuantity(i, $event)"
+              />
+              }
+            </div>
+          </div>
+        </div>
+        <div class="col-2">
+          <button
+            class="custom-btn-reversed"
+            (click)="deleteReservation(item.reservation.id)"
+          >
+            Elimina
+          </button>
+        </div>
+      </div>
+      <hr />
+      }
+    </div>
+    <div class="col-12 col-md-2">
+      <h2>Totale</h2>
+      <p class="fs-5">{{ getTotal() | currency : "EUR" }}</p>
+      <button class="custom-btn" (click)="fakePayment()">
+        Effettua il pagamento
+      </button>
+    </div>
+  </div>
+</div>
+} @else{
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="custom-border">Nessun elemento nel carrello</h1>
+    </div>
+    <div class="col-12 d-flex gap-5 pt-3">
+      <a routerLink="/" class="custom-link-on-black">Tora alla home</a>
+      <a routerLink="/movie" class="custom-link-on-black">Programmazione</a>
+    </div>
+  </div>
+</div>
+}
+
+<ng-template #fakeModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Pagamento Effettuato.</h4>
+    <button
+      type="button"
+      class="btn-close text-bg-danger"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <p>Il pagamento è stato effettuato con successo.</p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close()">
+      Chiudi
+    </button>
+  </div>
+</ng-template>

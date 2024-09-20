@@ -1,0 +1,38 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="custom-border">Tutti i film in programmazione</h1>
+      @for (movie of movies; track $index) {
+      <div
+        class="d-flex justify-content-evenly border-bottom border-secondary border-opacity-75 py-5 flex-column flex-md-row"
+      >
+        <div class="image-div">
+          <img [src]="movie.imagePath" alt="Movie Image" class="img-fluid" />
+        </div>
+        <div class="">
+          <h5 class="letter-spacing fs-2 pt-3 pt-md-0">
+            {{ movie.title }}
+          </h5>
+          <p class="fs-5">{{ movie.description }}</p>
+          <hr />
+          <h5>Cast:</h5>
+          <p *ngFor="let actor of movie.casts" class="fs-5">{{ actor }}</p>
+          <hr />
+          <h5>Genere:</h5>
+          <p class="fs-5">{{ movie.category }}</p>
+          <hr />
+          <div>
+            <a
+              *ngIf="movie.id"
+              class="custom-link-on-black"
+              (click)="getById(movie.id)"
+            >
+              Visualizza Dettagli</a
+            >
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>

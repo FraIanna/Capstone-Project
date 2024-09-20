@@ -1,0 +1,13 @@
+.login-div i {
+  left: -1.4em;
+  top: -0.1em;
+  color: #fff;
+
+  @media screen and (max-width: 423px) {
+    margin-left: 10em;
+  }
+}
+
+nav {
+  box-shadow: 0px 0px 8px 0px #000000;
+}

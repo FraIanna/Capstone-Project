@@ -1,0 +1,144 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 pb-3">
+      <h1 class="custom-border">Gestione Sale</h1>
+    </div>
+  </div>
+  <div class="row offset-md-1">
+    <div class="col-12">
+      <h2>Tutte le sale</h2>
+      <table class="custom-table">
+        <thead>
+          <tr>
+            <th>Nome della Sala</th>
+            <th>Descrizione</th>
+            <th>Posti Totali</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let hall of halls">
+            <td>{{ hall.name }}</td>
+            <td>{{ hall.description }}</td>
+            <td>{{ hall.capacity }}</td>
+            <td>
+              <button class="custom-btn-reversed" (click)="openModal(hall)">
+                Modifica
+              </button>
+              <button class="custom-btn ms-2" (click)="deleteHall(hall)">
+                Elimina
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <h2 class="mt-5">Creazione di una nuova sala</h2>
+    <div class="col-12 col-md-8">
+      <form [formGroup]="create" class="custom-container">
+        <div class="form-group mb-3">
+          <label for="name">Nome della Sala</label>
+          <div class="d-flex gap-2">
+            <input id="name" type="text" formControlName="name" />
+          </div>
+          <span *ngIf="isTouchedAndInvalid('name')">Campo obbligatorio. </span>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="description">Descrizione della Sala</label>
+          <div class="d-flex gap-2">
+            <textarea
+              id="description"
+              formControlName="description"
+              rows="3"
+              cols="50"
+            ></textarea>
+          </div>
+          <span *ngIf="isTouchedAndInvalid('description')"
+            >Campo obbligatorio.
+          </span>
+        </div>
+
+        <div class="form-group mb-3">
+          <label for="capacity">Capacità della Sala</label>
+          <div class="d-flex gap-2">
+            <input
+              id="capacity"
+              type="number"
+              formControlName="capacity"
+              min="1"
+            />
+          </div>
+          <span *ngIf="isTouchedAndInvalid('capacity')"
+            >Campo obbligatorio.
+          </span>
+        </div>
+        <button
+          class="custom-btn"
+          (click)="createHall()"
+          [disabled]="create.invalid"
+        >
+          Crea Sala
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<ng-template #hallModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Modifica Sala</h4>
+    <button
+      type="button"
+      class="btn-close text-bg-danger"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="hallForm">
+      <div class="form-group mb-3">
+        <label for="name">Nome della Sala</label>
+        <div class="d-flex gap-2">
+          <input id="name" type="text" formControlName="name" />
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="description">Descrizione della Sala</label>
+        <div class="d-flex gap-2">
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="capacity">Capacità della Sala</label>
+        <div class="d-flex gap-2">
+          <input
+            id="capacity"
+            type="number"
+            formControlName="capacity"
+            min="1"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="custom-btn-reversed" (click)="modal.close()">
+      Chiudi
+    </button>
+    <button
+      type="button"
+      class="custom-btn-reversed"
+      (click)="submitModal(modal)"
+      [disabled]="hallForm.invalid"
+    >
+      Conferma
+    </button>
+  </div>
+</ng-template>

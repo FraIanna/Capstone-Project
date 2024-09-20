@@ -1,0 +1,192 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1 class="custom-border">Il mio Profilo</h1>
+    </div>
+    <div class="row mt-4">
+      <div *ngIf="user" class="col-md-8 col-12 offset-md-2">
+        <div class="custom-container px-5 pt-4 pb-5">
+          <h2>Le tue informazioni</h2>
+          <hr />
+          <div class="row gap-5 offset-1">
+            <div class="col-3">
+              <label for="name" class="fw-bold fs-5">Nome</label>
+              <input id="name" type="text" [value]="user.name" readonly />
+            </div>
+            <div class="col-3">
+              <label for="email" class="fw-bold fs-5">Email</label>
+              <input id="email" type="text" [value]="user.email" readonly />
+            </div>
+            <div class="col-3">
+              <label for="password" class="fw-bold fs-5">Password</label>
+              <input
+                id="password"
+                [type]="showPassword ? 'text' : 'password'"
+                [value]="user.password"
+                readonly
+              />
+            </div>
+          </div>
+          <div class="col-12 d-flex justify-content-center mt-3">
+            <button class="custom-btn-reversed" (click)="openPasswordModal()">
+              Modifica Profilo
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- primo modale -->
+<ng-template #passwordModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Inserisci la tua password</h4>
+    <button
+      type="button"
+      class="btn-close text-bg-danger"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="passwordForm">
+      <div class="form-group">
+        <label for="currentPassword">Password Attuale</label>
+        <div class="d-flex gap-2">
+          <button
+            type="button"
+            class="bg-transparent text-white border-0 outline-none"
+            (click)="togglePasswordVisibility('password')"
+          >
+            <i [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+          </button>
+          <input
+            id="currentPassword"
+            type="password"
+            formControlName="currentPassword"
+            [type]="showPassword ? 'text' : 'password'"
+          />
+        </div>
+
+        <div
+          *ngIf="
+            passwordForm.get('currentPassword')?.invalid &&
+            passwordForm.get('currentPassword')?.touched
+          "
+          class="text-danger"
+        >
+          Password richiesta
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="custom-btn-reversed" (click)="modal.close()">
+      Chiudi
+    </button>
+    <button
+      type="button"
+      class="custom-btn-reversed"
+      (click)="validateInitialPassword(modal)"
+      [disabled]="passwordForm.invalid"
+    >
+      Conferma
+    </button>
+  </div>
+</ng-template>
+
+<!-- secondo modale -->
+<ng-template #profileModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">Modifica Profilo</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"
+    ></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="profileForm">
+      <div class="form-group">
+        <label for="name">Nome</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          [placeholder]="user.name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          [placeholder]="user.email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="newPassword">Nuova Password</label>
+        <div class="d-flex gap-2">
+          <button
+            type="button"
+            class="bg-transparent text-white border-0 outline-none"
+            (click)="togglePasswordVisibility('password')"
+          >
+            <i [ngClass]="showPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"></i>
+          </button>
+          <input
+            id="newPassword"
+            type="password"
+            formControlName="newPassword"
+            [type]="showPassword ? 'text' : 'password'"
+          />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Conferma Password</label>
+        <div class="d-flex gap-2">
+          <button
+            type="button"
+            class="bg-transparent text-white border-0 outline-none"
+            (click)="togglePasswordVisibility('confirmPassword')"
+          >
+            <i
+              [ngClass]="showConfirmPassword ? 'bi bi-eye' : 'bi bi-eye-slash'"
+            ></i>
+          </button>
+          <input
+            id="confirmPassword"
+            type="password"
+            formControlName="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+          />
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="custom-btn-reversed" (click)="modal.close()">
+      Chiudi
+    </button>
+    <button
+      type="button"
+      class="custom-btn-reversed"
+      (click)="updateProfile(modal)"
+      [disabled]="profileForm.invalid"
+    >
+      Salva Modifiche
+    </button>
+  </div>
+</ng-template>
+
+<ngb-toast *ngIf="show" [autohide]="true" [delay]="3000">
+  <ng-template ngbToastHeader>
+    <p class="me-auto fs-5">
+      <i class="bi bi-bell-fill"></i>
+    </p>
+  </ng-template>
+  Profilo Aggiornato!
+</ngb-toast>

@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="row">
+    @if (movie && hall){
+    <div class="col-12">
+      <h1 class="custom-border">{{ movie.title }}</h1>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-center py-5">
+          <iframe
+            width="500"
+            height="315"
+            [src]="sanitizer.bypassSecurityTrustResourceUrl(movie.trailerUrl)"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div class="col-12">
+          <div class="row custom-container">
+            <div class="col-md-4 col-12">
+              <img
+                [src]="movie.imagePath"
+                alt="Movie Image"
+                class="img-fluid"
+              />
+            </div>
+            <div class="col-md-8 col-12">
+              <h5 class="letter-spacing fs-2 pt-3 pt-md-0">
+                {{ movie.title }}
+              </h5>
+              <p class="fs-5">{{ movie.description }}</p>
+              <hr />
+              <h5>Data di uscita:</h5>
+              <p class="fs-5">{{ movie.releaseDate | date : "dd/MM/yyyy" }}</p>
+              <hr />
+              <h5>Genere:</h5>
+              <p class="fs-5">{{ movie.category }}</p>
+              <hr />
+              <h5>Durata:</h5>
+              <p class="fs-5">{{ movie.runtime }} min.</p>
+              <hr />
+              <h5>Orari:</h5>
+              @if(movie.showtimes && movie.showtimes.length > 0) {
+              <ul class="list-group list-unstyled">
+                <li *ngFor="let showtime of movie.showtimes" class="fs-5">
+                  {{ showtime.start | date : "HH:mm" }} -
+                  {{ showtime.end | date : "HH:mm" }}
+                </li>
+                <hr />
+              </ul>
+              } @else{
+              <p>Orari momentaneamente non disponibili</p>
+              }
+              <h5>Cast:</h5>
+              @if(movie.casts && movie.casts.length > 0) {
+              <ul class="list-group list-unstyled">
+                <li *ngFor="let actor of movie.casts" class="fs-5">
+                  {{ actor }}
+                </li>
+                <hr />
+              </ul>
+              }
+              <h5 class="d-inline pe-2">{{ hall.name }}</h5>
+            </div>
+            <div class="col-12 d-flex justify-content-center mt-2">
+              <button class="custom-btn-reversed" (click)="createReservation()">
+                Acquista il tuo biglietto!
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
+
+<ngb-toast *ngIf="show" [autohide]="true" [delay]="3000">
+  <ng-template ngbToastHeader>
+    <p class="me-auto fs-5">
+      <i class="bi bi-bell-fill"></i>
+    </p>
+  </ng-template>
+  Prodotto aggiunto al carrello!
+</ngb-toast>
